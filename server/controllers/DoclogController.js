@@ -4,12 +4,25 @@ const joi = require("joi");
 const passwordComplexity = require("joi-password-complexity");
 
 const DoclogController = async (req, res) => {
+
+  // console.log("Login request for doctor succesful");
+
+  // console.log(req.body.email);
+  // console.log(req.body.password);
   try {
     const user = await Doc.findOne({ email: req.body.email });
+
     if (!user) {
       return res.status(401).json({ message: "Invalid User or Password" });
     }
-    const validPassword = await bcrypt.compare(req.body.password, user.password)
+    // const validPassword = await bcrypt.compare(req.body.password, user.password);
+    // console.log("User in mongodb") ;
+    // console.log(user.email);
+    // console.log(user.password);
+    const validPassword = user.password===req.body.password;
+  
+    console.log(validPassword);
+
     if (!validPassword) {
       return res.status(401).json({ message: "Invalid Password" });
     }
